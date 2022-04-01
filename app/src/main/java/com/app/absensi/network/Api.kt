@@ -4,13 +4,14 @@ import com.app.absensi.data.request.LoginRequest
 import com.app.absensi.data.model.ModelLogin
 import com.app.absensi.data.response.LogoutResponse
 import com.app.absensi.data.model.ModelDataMatakuliah
+import com.app.absensi.data.model.ModelDataRelasi
 import retrofit2.Call
 import retrofit2.http.*
 
 interface Api {
 
-//    @GET("user")
-//    fun getUser(): Call<UserResponse2>
+    @GET("relasiModel")
+    fun getRelasi(): Call<ModelDataRelasi>
 
     @POST("login")
     fun postLogin(

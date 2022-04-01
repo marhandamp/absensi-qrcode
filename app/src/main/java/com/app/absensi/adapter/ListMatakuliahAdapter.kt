@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.absensi.R
-import com.app.absensi.databinding.ItemAttendanceBinding
-import com.app.absensi.data.Matakuliah
+import com.app.absensi.data.response.MatakuliahResponse
+import com.app.absensi.databinding.ItemMatakuliahBinding
 
-class ListMatakuliahAdapter(private val listMatakuliah: ArrayList<Matakuliah>, private val context: Context, private val kodeFitur: Int): RecyclerView.Adapter<ListMatakuliahAdapter.AttendanceViewHolder>() {
+class ListMatakuliahAdapter(private val listMatakuliah: ArrayList<MatakuliahResponse>, private val context: Context, private val kodeFitur: Int): RecyclerView.Adapter<ListMatakuliahAdapter.AttendanceViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -17,28 +17,28 @@ class ListMatakuliahAdapter(private val listMatakuliah: ArrayList<Matakuliah>, p
     }
 
     inner class AttendanceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemAttendanceBinding.bind(itemView)
-        fun bind(matakuliah: Matakuliah, kodeFitur: Int) {
-            val namaDosen = StringBuilder()
-            val size = matakuliah.dosen!!.size
+        val binding = ItemMatakuliahBinding.bind(itemView)
+        fun bind(matakuliah: MatakuliahResponse, kodeFitur: Int) {
+//            val namaDosen = StringBuilder()
+//            val size = matakuliah.dosen!!.size
+//
+//            for (a in matakuliah.dosen!!.indices){
+//                namaDosen.append(matakuliah.dosen!![a])
+//                if (a != size-1){
+//                    namaDosen.append(", ")
+//                }
+//            }
 
-            for (a in matakuliah.dosen!!.indices){
-                namaDosen.append(matakuliah.dosen!![a])
-                if (a != size-1){
-                    namaDosen.append(", ")
-                }
-            }
-
-            binding.tvNamaDosen.text = namaDosen
-            binding.tvMatakuliah.text = matakuliah.namaMatakuliah
+            binding.tvNamaMatakuliah.text = matakuliah.namaMatakuliah
+            binding.tvRuangan.text = "Ruangan ${matakuliah.ruangan}"
+            binding.tvPukul.text = "Pukul ${matakuliah.jam}"
             binding.tvKelas.text = matakuliah.kelas
-            binding.tvJamMasuk.text = matakuliah.jam
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(matakuliah, kodeFitur) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttendanceViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_attendance, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_matakuliah, parent, false)
         return AttendanceViewHolder(view)
     }
 
@@ -51,6 +51,6 @@ class ListMatakuliahAdapter(private val listMatakuliah: ArrayList<Matakuliah>, p
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(matakuliah: Matakuliah, kodeFitur: Int)
+        fun onItemClicked(matakuliah: MatakuliahResponse, kodeFitur: Int)
     }
 }

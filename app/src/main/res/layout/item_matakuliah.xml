@@ -23,49 +23,46 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_nama_dosen"
+                android:id="@+id/tv_nama_matakuliah"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="Sakir S.T"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_matakuliah"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Pemograman Web"
-                app:layout_constraintEnd_toEndOf="@+id/tv_nama_dosen"
-                app:layout_constraintStart_toStartOf="@+id/tv_nama_dosen"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nama_dosen" />
-
-            <TextView
-                android:id="@+id/tv_jam_masuk"
+                android:id="@+id/tv_pukul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Pukul 08:00 - 10:00"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tv_matakuliah"
-                app:layout_constraintTop_toBottomOf="@+id/tv_matakuliah" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_ruangan"
+                app:layout_constraintEnd_toEndOf="@+id/tv_nama_matakuliah"
+                app:layout_constraintTop_toTopOf="@+id/tv_ruangan" />
 
             <TextView
                 android:id="@+id/tv_kelas"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_nama_matakuliah"
+                app:layout_constraintStart_toStartOf="@+id/tv_nama_matakuliah"
+                app:layout_constraintTop_toBottomOf="@+id/tv_nama_matakuliah" />
+
+            <TextView
+                android:id="@+id/tv_ruangan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginBottom="8dp"
-                android:text="Teknik Elektro 2"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_matakuliah"
-                app:layout_constraintTop_toBottomOf="@+id/tv_matakuliah" />
+                app:layout_constraintEnd_toStartOf="@+id/tv_pukul"
+                app:layout_constraintStart_toStartOf="@+id/tv_kelas"
+                app:layout_constraintTop_toBottomOf="@+id/tv_kelas" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

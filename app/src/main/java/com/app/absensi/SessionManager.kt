@@ -14,9 +14,10 @@ class SessionManager(context: Context) {
     /**
      * Function to save auth token
      */
-    fun saveAuthToken(token: String) {
+    fun saveAuthTokenAndIdUser(token: String, idUser: Int) {
         val editor = prefs.edit()
         editor.putString(USER_TOKEN, token)
+        editor.putInt(USER_ID, idUser)
         editor.apply()
     }
 
@@ -27,9 +28,14 @@ class SessionManager(context: Context) {
         return prefs.getString(USER_TOKEN, null)
     }
 
-    fun deleteAuthToken(){
+    fun fetchIdUser(): Int{
+        return prefs.getInt(USER_ID, 0)
+    }
+
+    fun deleteAuthTokenAndIdUser(){
         val editor = prefs.edit()
         editor.remove(USER_TOKEN)
+        editor.remove(USER_ID)
         editor.apply()
     }
 }

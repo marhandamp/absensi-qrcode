@@ -76,7 +76,7 @@ class LoginDosenActivity : AppCompatActivity(), View.OnClickListener {
                 val code = response.code()
                 val data = response.body()
                 if (code == 200){
-                    sessionManager.saveAuthToken(data!!.token!!)
+                    sessionManager.saveAuthTokenAndIdUser(data!!.token!!, data.user!!.id!!)
                     Intent(this@LoginDosenActivity, DosenActivity::class.java).also { intent ->
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)

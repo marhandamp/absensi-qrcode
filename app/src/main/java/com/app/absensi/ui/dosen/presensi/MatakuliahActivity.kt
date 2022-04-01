@@ -1,107 +1,131 @@
 package com.app.absensi.ui.dosen.presensi
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.absensi.SessionManager
 import com.app.absensi.adapter.ListMatakuliahAdapter
 import com.app.absensi.databinding.ActivityMatakuliahBinding
-import com.app.absensi.data.Matakuliah
-import com.google.firebase.database.*
-import java.util.*
+import com.app.absensi.data.model.ModelDataMatakuliah
+import com.app.absensi.data.model.ModelDataRelasi
+import com.app.absensi.data.response.MatakuliahResponse
+import com.app.absensi.data.response.RelasiResponse
+import com.app.absensi.network.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.collections.ArrayList
 
 class MatakuliahActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMatakuliahBinding
-    private lateinit var matakuliahRef: DatabaseReference
-    private lateinit var dosenPengajarRef: DatabaseReference
-    private lateinit var matakuliahList: ArrayList<Matakuliah>
-    private lateinit var listMatakuliahAdapter: ListMatakuliahAdapter
-    private lateinit var data: Matakuliah
+    private lateinit var sessionManager: SessionManager
+    private lateinit var adapter: ListMatakuliahAdapter
     private var kodeFitur: Int = 0
+    private val relasiResponse = ArrayList<RelasiResponse>()
+    private val matakuliahResponse = ArrayList<MatakuliahResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMatakuliahBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        sessionManager = SessionManager(this)
         kodeFitur = intent.getIntExtra("KODE_FITUR", 0)
-        binding.rvAttendaceList.layoutManager = LinearLayoutManager(this)
-        matakuliahRef = FirebaseDatabase.getInstance().getReference("Matakuliah")
-        dosenPengajarRef = FirebaseDatabase.getInstance().getReference("DosenPengajar")
 
-//        getDataMatakuliah(matakuliahRef)
+        getRelasiApi()
+
+//        onCLick()
+
+        binding.rvAttendaceList.layoutManager = LinearLayoutManager(this)
+
+
     }
 
-//    fun getMatakuliah(){
-//        RetrofitClient.instance(this).getMatakuliah().enqueue(object :
-//            Callback<ModelDataMatakuliah> {
-//            override fun onResponse(
-//                call: Call<ModelDataMatakuliah>,
-//                response: Response<ModelDataMatakuliah>
-//            ) {
-//                val code = response.code()
-//                when(code){
-//                    200 -> {
-//                        for (a in response.body().data.indices){
-//
-//                        }
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ModelDataMatakuliah>, t: Throwable) {
-//                TODO("Not yet implemented")
-//            }
-//        })
-//    }
+    private fun getRelasiApi(){
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Memuat Data..")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
 
-//    private fun getDataMatakuliah(ref: DatabaseReference) {
-//        loading(true)
-//        ref.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                matakuliahList = ArrayList()
-//                if (snapshot.exists()){
-//                    loading(false)
-//                    for (i in snapshot.children){
-//                        val data = i.getValue(Matakuliah::class.java) as Matakuliah
-//                        val dosen = data.kodeDosen
-//
-//                        for (j in dosen!!.indices){
-//                            if (dosen[j] == uid){
-//                                matakuliahList.add(data)
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    loading(false)
-//                    Toast.makeText(this@MatakuliahActivity, "Matakuliah Tidak Ada", Toast.LENGTH_SHORT).show()
-//                    Log.d("Irwandi", "Data tidak Ada")
-//                }
-//
-//                listMatakuliahAdapter = ListMatakuliahAdapter(matakuliahList, this@MatakuliahActivity, kodeFitur)
-//                binding.rvAttendaceList.adapter = listMatakuliahAdapter
-//
-//                onCLick()
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                loading(false)
-//                Log.d("Irwandi-Error", error.message)
-//            }
-//        })
-//    }
+        RetrofitClient.instance(this).getRelasi().enqueue(object : Callback<ModelDataRelasi> {
+            override fun onResponse(
+                call: Call<ModelDataRelasi>,
+                response: Response<ModelDataRelasi>
+            ) {
+                val code = response.code()
+                val data = response.body()
+                val idUser = sessionManager.fetchIdUser()
+                if (code == 200){
+                    for (a in data!!.data!!.indices){
+                        if (idUser == data.data!![a].dosenId){
+                            relasiResponse.add(data.data!![a])
+                        }
+                    }
+                    getMatakuliahApi(progressDialog)
+                } else {
+                    progressDialog.dismiss()
+                    Toast.makeText(this@MatakuliahActivity, "Ada yang tidak beres\n${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ModelDataRelasi>, t: Throwable) {
+                progressDialog.dismiss()
+                Toast.makeText(this@MatakuliahActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getMatakuliahApi(progressDialog: ProgressDialog) {
+        RetrofitClient.instance(this).getMatakuliah().enqueue(object :
+            Callback<ModelDataMatakuliah> {
+            override fun onResponse(
+                call: Call<ModelDataMatakuliah>,
+                response: Response<ModelDataMatakuliah>
+            ) {
+                val data = response.body()
+                val code = response.code()
+                if (code == 200){
+                    for(a in data!!.data!!.indices){
+                        for (b in relasiResponse.indices){
+                            if (relasiResponse[b].matakuliahId == data.data!![a].uuid){
+                                matakuliahResponse.add(data.data!![a])
+                            }
+                        }
+                    }
+                    adapter = ListMatakuliahAdapter(matakuliahResponse, this@MatakuliahActivity, kodeFitur)
+                    binding.rvAttendaceList.adapter = adapter
+                    progressDialog.dismiss()
+                    onCLick()
+                } else {
+                    progressDialog.dismiss()
+                    Toast.makeText(this@MatakuliahActivity, "Ada yang tidak beres\n${response.message()}", Toast.LENGTH_SHORT).show()
+                    Log.e("Irwandi", "Ada yang tidak beres\n${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ModelDataMatakuliah>, t: Throwable) {
+                progressDialog.dismiss()
+                Toast.makeText(this@MatakuliahActivity, t.message, Toast.LENGTH_SHORT).show()
+                Log.e("Irwandi", t.message.toString())
+            }
+        })
+    }
 
     private fun onCLick() {
-        listMatakuliahAdapter.setOnItemClickCallback(object : ListMatakuliahAdapter.OnItemClickCallback {
-            override fun onItemClicked(matakuliah: Matakuliah, kodeFitur: Int) {
+        adapter.setOnItemClickCallback(object : ListMatakuliahAdapter.OnItemClickCallback {
+            override fun onItemClicked(matakuliah: MatakuliahResponse, kodeFitur: Int) {
                 val intent = Intent(this@MatakuliahActivity, PertemuanActivity::class.java)
                 intent.putExtra("MATAKULIAH", matakuliah)
                 intent.putExtra("KODE_FITUR", kodeFitur)
                 startActivity(intent)
             }
+
         })
     }
 

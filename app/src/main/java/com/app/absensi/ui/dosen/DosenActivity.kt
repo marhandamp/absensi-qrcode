@@ -72,7 +72,7 @@ class DosenActivity : AppCompatActivity() {
                     200 -> {
                         progressDialog.dismiss()
                         val sessionManager = SessionManager(this@DosenActivity)
-                        sessionManager.deleteAuthToken()
+                        sessionManager.deleteAuthTokenAndIdUser()
                         Intent(this@DosenActivity, MainActivity::class.java).also {
                             it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(it)
