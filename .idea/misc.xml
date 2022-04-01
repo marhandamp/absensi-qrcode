@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/ic_close.xml" value="0.2169230769230769" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1125" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1125" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/ic_login.xml" value="0.2203125" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/ic_qr_code_scanner.xml" value="0.2203125" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/ic_sick.xml" value="0.2169230769230769" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/img_login.xml" value="0.2203125" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/img_login_dosen.xml" value="0.2203125" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/drawable/rounded_corner.xml" value="0.2203125" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_absensi_pertemuan.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_admin.xml" value="0.25" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_attendance.xml" value="0.25" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_detail_pertemuan.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_dosen.xml" value="0.25" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_home.xml" value="0.19722222222222222" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_list_matakuliah.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_list_pertemuan.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_login_admin.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_login_dosen.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_mahasiswa.xml" value="0.25" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_mahasiswa_attendance.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_mata_kuliah.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_matakuliah.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_matematika.xml" value="0.19010416666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_pertemuan.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_pertemuan_coba.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/activity_search_qr_code.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/fragment_dashboard.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/fragment_notifications.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/item_attendance.xml" value="0.33" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/item_mahasiswa_attendance.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/item_pertemuan.xml" value="0.33" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/layout/item_pertemuan2.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/menu/signout_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/File Andang/Kuliah/Semester 8/Skripsi/Program/Irwandi/Absensi/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2169230769230769" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
