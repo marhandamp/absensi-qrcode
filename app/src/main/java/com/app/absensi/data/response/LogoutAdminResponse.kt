@@ -1,5 +1,5 @@
 package com.app.absensi.data.response
 
-class LogoutResponse {
+class LogoutAdminResponse {
     var message: String? = null
 }

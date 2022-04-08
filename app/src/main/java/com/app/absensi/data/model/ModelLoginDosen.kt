@@ -1,10 +1,10 @@
 package com.app.absensi.data.model
 
-import com.app.absensi.data.response.LoginResponse
+import com.app.absensi.data.response.LoginDosenResponse
 
-class ModelLogin {
+class ModelLoginDosen {
     var code: String? = null
     var message: String? = null
     var token: String? = null
-    var user: LoginResponse? = null
+    var user: LoginDosenResponse? = null
 }

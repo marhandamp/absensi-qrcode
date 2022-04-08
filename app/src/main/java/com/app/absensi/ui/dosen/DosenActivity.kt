@@ -11,7 +11,7 @@ import com.app.absensi.MainActivity
 import com.app.absensi.R
 import com.app.absensi.SessionManager
 import com.app.absensi.databinding.ActivityDosenBinding
-import com.app.absensi.data.response.LogoutResponse
+import com.app.absensi.data.response.LogoutDosenResponse
 import com.app.absensi.network.RetrofitClient
 import com.app.absensi.ui.dosen.presensi.MatakuliahActivity
 import retrofit2.Call
@@ -51,28 +51,28 @@ class DosenActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item.itemId == R.id.menu_signout){
-            postLogoutApi()
+            postLogoutDosenApi()
             true
         } else {
             super.onOptionsItemSelected(item)
         }
     }
 
-    private fun postLogoutApi(){
+    private fun postLogoutDosenApi(){
         val progressDialog = ProgressDialog(this@DosenActivity)
         progressDialog.setMessage("Tunggu..")
         progressDialog.setCancelable(false)
         progressDialog.show()
-        RetrofitClient.instance(this).postLogout().enqueue(object : Callback<LogoutResponse> {
+        RetrofitClient.instance(this).postLogoutDosen().enqueue(object : Callback<LogoutDosenResponse> {
             override fun onResponse(
-                call: Call<LogoutResponse>,
-                response: Response<LogoutResponse>
+                call: Call<LogoutDosenResponse>,
+                dosenResponse: Response<LogoutDosenResponse>
             ) {
-                when(response.code()){
+                when(dosenResponse.code()){
                     200 -> {
                         progressDialog.dismiss()
                         val sessionManager = SessionManager(this@DosenActivity)
-                        sessionManager.deleteAuthTokenAndIdUser()
+                        sessionManager.deleteAuthTokenIdUserAndStatusUser()
                         Intent(this@DosenActivity, MainActivity::class.java).also {
                             it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(it)
@@ -80,12 +80,12 @@ class DosenActivity : AppCompatActivity() {
                     }
                     else -> {
                         progressDialog.dismiss()
-                        Toast.makeText(this@DosenActivity, "Ada yang tidak beres\n${response.message()}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DosenActivity, "Ada yang tidak beres\n${dosenResponse.message()}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
-            override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
+            override fun onFailure(call: Call<LogoutDosenResponse>, t: Throwable) {
                 progressDialog.dismiss()
                 Toast.makeText(this@DosenActivity, t.message, Toast.LENGTH_SHORT).show()
             }

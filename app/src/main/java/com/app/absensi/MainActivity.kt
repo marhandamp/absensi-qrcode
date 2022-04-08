@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 //import com.app.absensi.adapter.ListMatakuliahAdapter
 import com.app.absensi.databinding.ActivityMainBinding
+import com.app.absensi.ui.admin.AdminActivity
 import com.app.absensi.ui.admin.LoginAdminActivity
 import com.app.absensi.ui.dosen.DosenActivity
 import com.app.absensi.ui.dosen.LoginDosenActivity
@@ -23,7 +24,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         sessionManager = SessionManager(this)
         Log.d("Irwandi", sessionManager.fetchAuthToken().toString())
 
-        if(sessionManager.fetchAuthToken() != null){
+        if(sessionManager.fetchAuthToken() != null && sessionManager.fetchStatusUser() == "ADMIN"){
+            val intent = Intent(this@MainActivity, AdminActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        if(sessionManager.fetchAuthToken() != null && sessionManager.fetchStatusUser() == "DOSEN"){
             val intent = Intent(this@MainActivity, DosenActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)

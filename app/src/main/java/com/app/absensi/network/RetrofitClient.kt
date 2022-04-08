@@ -1,13 +1,15 @@
 package com.app.absensi.network
 
 import android.content.Context
+import com.google.gson.GsonBuilder
 import com.smartinovasi.kopiku.AuthInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 object RetrofitClient {
-    private val BASE_URL = "http://192.168.128.78:8000/api/"
+    private val BASE_URL = "http://192.168.82.78:8000/"
 
 //    val instance: Api by lazy {
 //        val retrofit = Retrofit.Builder()
@@ -32,6 +34,10 @@ object RetrofitClient {
         return OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(context))
             .build()
+    }
+
+    fun getBaseUrl(): String{
+        return BASE_URL
     }
 
 }

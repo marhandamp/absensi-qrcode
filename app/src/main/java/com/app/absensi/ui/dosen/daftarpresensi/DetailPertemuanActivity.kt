@@ -6,79 +6,97 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.absensi.adapter.ListPresensiAdapter
 import com.app.absensi.databinding.ActivityDetailPertemuanBinding
-import com.app.absensi.data.Mahasiswa
-import com.app.absensi.data.Matakuliah
-import com.google.firebase.database.*
-import kotlin.collections.ArrayList
+import com.app.absensi.data.model.ModelDataMahasiswa
+import com.app.absensi.data.response.MatakuliahResponse
+import com.app.absensi.network.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DetailPertemuanActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailPertemuanBinding
     private lateinit var adapter: ListPresensiAdapter
-    private lateinit var matakuliah: Matakuliah
-    private var pertemuan: Int = 1
-    private lateinit var daftarMahasiswaRef: DatabaseReference
-    private lateinit var daftarPresensiRef: DatabaseReference
-    private var listMahasiswa = ArrayList<Mahasiswa>()
-    private var listPresensi = ArrayList<Mahasiswa>()
-//    private var sum by Delegates.notNull<Int>()
-//    private var dataAttendanceSize by Delegates.notNull<Int>()
+    private lateinit var matakuliah: MatakuliahResponse
+    private var pertemuan: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailPertemuanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        daftarMahasiswaRef = FirebaseDatabase.getInstance().getReference("daftarMahasiswa")
-        daftarPresensiRef = FirebaseDatabase.getInstance().getReference("daftarPresensi")
         matakuliah = intent.getParcelableExtra("MATAKULIAH")!!
-        pertemuan = intent.getIntExtra("PERTEMUAN", 1)
+        pertemuan = intent.getIntExtra("PERTEMUAN", 0)
+        binding.rvPertemuan.layoutManager = LinearLayoutManager(this)
 
-        getDaftarPresensi()
+        getMahasiswaApi()
     }
 
-    private fun getDaftarPresensi(){
-        daftarPresensiRef.child(matakuliah.id.toString()).child(pertemuan.toString()).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for (a in snapshot.children){
-                        val data = a.getValue(Mahasiswa::class.java)!!
-                        listPresensi.add(data)
+    private fun getMahasiswaApi(){
+        RetrofitClient.instance(this).getMahasiswa(matakuliah.id.toString()).enqueue(object : Callback<ModelDataMahasiswa> {
+            override fun onResponse(
+                call: Call<ModelDataMahasiswa>,
+                response: Response<ModelDataMahasiswa>
+            ) {
+                if (response.isSuccessful){
+                    val data = response.body()!!.data
+                    if (data!!.isNotEmpty()){
+                        adapter = ListPresensiAdapter(data, pertemuan)
+                        binding.rvPertemuan.adapter = adapter
+                    } else {
+                        Toast.makeText(this@DetailPertemuanActivity, "Mahasiswa Kosong", Toast.LENGTH_SHORT).show()
                     }
                 }
-                getDaftarMahasiswa(listPresensi)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@DetailPertemuanActivity, error.message, Toast.LENGTH_SHORT).show()
+            override fun onFailure(call: Call<ModelDataMahasiswa>, t: Throwable) {
+                Toast.makeText(this@DetailPertemuanActivity, t.message, Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun getDaftarMahasiswa(listPresensi: ArrayList<Mahasiswa>){
-        daftarMahasiswaRef.child(matakuliah.id.toString()).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for (a in snapshot.children){
-                        val data = a.getValue(Mahasiswa::class.java)!!
-                        listMahasiswa.add(data)
-                    }
-                }
-
-                binding.rvPertemuan.layoutManager = LinearLayoutManager(this@DetailPertemuanActivity)
-                adapter = ListPresensiAdapter(listMahasiswa, listPresensi, pertemuan, daftarPresensiRef, matakuliah.id.toString())
-                binding.rvPertemuan.adapter = adapter
-
-//                Log.d("Irwandi Item5", listMahasiswa.toString())
-//                Log.d("Irwandi Item6", listPresensi.toString())
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@DetailPertemuanActivity, error.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun getDaftarPresensi(){
+//        daftarPresensiRef.child(matakuliah.id.toString()).child(pertemuan.toString()).addListenerForSingleValueEvent(object :
+//            ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                if (snapshot.exists()){
+//                    for (a in snapshot.children){
+//                        val data = a.getValue(Mahasiswa::class.java)!!
+//                        listPresensi.add(data)
+//                    }
+//                }
+//                getDaftarMahasiswa(listPresensi)
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Toast.makeText(this@DetailPertemuanActivity, error.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
+//
+//    private fun getDaftarMahasiswa(listPresensi: ArrayList<Mahasiswa>){
+//        daftarMahasiswaRef.child(matakuliah.id.toString()).addListenerForSingleValueEvent(object :
+//            ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                if (snapshot.exists()){
+//                    for (a in snapshot.children){
+//                        val data = a.getValue(Mahasiswa::class.java)!!
+//                        listMahasiswa.add(data)
+//                    }
+//                }
+//
+//                binding.rvPertemuan.layoutManager = LinearLayoutManager(this@DetailPertemuanActivity)
+//                adapter = ListPresensiAdapter(listMahasiswa, listPresensi, pertemuan, daftarPresensiRef, matakuliah.id.toString())
+//                binding.rvPertemuan.adapter = adapter
+//
+////                Log.d("Irwandi Item5", listMahasiswa.toString())
+////                Log.d("Irwandi Item6", listPresensi.toString())
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Toast.makeText(this@DetailPertemuanActivity, error.message, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
 //    private fun getDaftarPresensi(){
 //        daftarPresensiRef.child(matakuliah.id.toString()).child(pertemuan.toString()).addValueEventListener(object :

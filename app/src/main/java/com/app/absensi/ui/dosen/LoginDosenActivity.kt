@@ -9,8 +9,8 @@ import android.widget.Toast
 import com.app.absensi.R
 import com.app.absensi.SessionManager
 import com.app.absensi.databinding.ActivityLoginDosenBinding
-import com.app.absensi.data.request.LoginRequest
-import com.app.absensi.data.model.ModelLogin
+import com.app.absensi.data.request.LoginDosenRequest
+import com.app.absensi.data.model.ModelLoginDosen
 import com.app.absensi.network.RetrofitClient
 import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Call
@@ -57,7 +57,7 @@ class LoginDosenActivity : AppCompatActivity(), View.OnClickListener {
                     return
                 }
 
-                val loginRequest = LoginRequest()
+                val loginRequest = LoginDosenRequest()
                 loginRequest.email = email
                 loginRequest.password = password
 
@@ -66,17 +66,17 @@ class LoginDosenActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun postLoginApi(loginRequest: LoginRequest){
-        RetrofitClient.instance(this).postLogin(loginRequest).enqueue(object : Callback<ModelLogin> {
+    private fun postLoginApi(loginDosenRequest: LoginDosenRequest){
+        RetrofitClient.instance(this).postLoginDosen(loginDosenRequest).enqueue(object : Callback<ModelLoginDosen> {
             override fun onResponse(
-                call: Call<ModelLogin>,
-                response: Response<ModelLogin>
+                call: Call<ModelLoginDosen>,
+                response: Response<ModelLoginDosen>
             ) {
                 loading(false)
                 val code = response.code()
                 val data = response.body()
                 if (code == 200){
-                    sessionManager.saveAuthTokenAndIdUser(data!!.token!!, data.user!!.id!!)
+                    sessionManager.saveAuthTokenAndIdUser(data!!.token!!, data.user!!.id!!, "DOSEN")
                     Intent(this@LoginDosenActivity, DosenActivity::class.java).also { intent ->
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -87,7 +87,7 @@ class LoginDosenActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-            override fun onFailure(call: Call<ModelLogin>, t: Throwable) {
+            override fun onFailure(call: Call<ModelLoginDosen>, t: Throwable) {
                 loading(false)
                 Toast.makeText(this@LoginDosenActivity, t.message, Toast.LENGTH_SHORT).show()
                 Log.d("Irwandi", t.message.toString())
