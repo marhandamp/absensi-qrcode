@@ -1,12 +1,16 @@
 package com.app.absensi.ui.dosen.daftarpresensi
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.absensi.adapter.ListPresensiAdapter
+import com.app.absensi.data.model.ModelDataHasilAbsensi
 import com.app.absensi.databinding.ActivityDetailPertemuanBinding
 import com.app.absensi.data.model.ModelDataMahasiswa
+import com.app.absensi.data.response.AbsensiResponse
+import com.app.absensi.data.response.MahasiswaResponse
 import com.app.absensi.data.response.MatakuliahResponse
 import com.app.absensi.network.RetrofitClient
 import retrofit2.Call
@@ -17,6 +21,8 @@ class DetailPertemuanActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailPertemuanBinding
     private lateinit var adapter: ListPresensiAdapter
     private lateinit var matakuliah: MatakuliahResponse
+//    private val mahasiswaList = ArrayList<MahasiswaResponse>()
+//    private val absensiList = ArrayList<AbsensiResponse>()
     private var pertemuan: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,8 +46,7 @@ class DetailPertemuanActivity : AppCompatActivity() {
                 if (response.isSuccessful){
                     val data = response.body()!!.data
                     if (data!!.isNotEmpty()){
-                        adapter = ListPresensiAdapter(data, pertemuan)
-                        binding.rvPertemuan.adapter = adapter
+                        getAbsensiApi(data)
                     } else {
                         Toast.makeText(this@DetailPertemuanActivity, "Mahasiswa Kosong", Toast.LENGTH_SHORT).show()
                     }
@@ -53,6 +58,54 @@ class DetailPertemuanActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun getAbsensiApi(mahasiswaList: ArrayList<MahasiswaResponse>) {
+        RetrofitClient.instance(this).getAbsensi(matakuliah.id.toString()).enqueue(object : Callback<ModelDataHasilAbsensi> {
+            override fun onResponse(
+                call: Call<ModelDataHasilAbsensi>,
+                response: Response<ModelDataHasilAbsensi>
+            ) {
+                if (response.isSuccessful){
+                    val data = response.body()?.data
+                    val absensiList = ArrayList<AbsensiResponse>()
+                    if (data!!.isNotEmpty()){
+                        for (a in data.indices){
+                            if (data[a].pertemuan == (pertemuan+1).toString()){
+                                absensiList.add(data[a])
+                            }
+                        }
+                        adapter = ListPresensiAdapter(mahasiswaList, pertemuan+1, absensiList, this@DetailPertemuanActivity, matakuliah.id!!)
+                        binding.rvPertemuan.adapter = adapter
+                    }
+                } else {
+                    Toast.makeText(this@DetailPertemuanActivity, "Ada Yang Tidak Beres: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ModelDataHasilAbsensi>, t: Throwable) {
+                Toast.makeText(this@DetailPertemuanActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+
+
+        })
+    }
+
+//    for (a in data.indices){
+//        if (data[a].pertemuan == pertemuan.toString()){
+//            absensiList.add(data[a])
+//        }
+//    }
+
+
+
+//                        for (a in absensiList.indices){
+//                            for (b in mahasiswaList.indices){
+//                                if (absensiList[a].nim == mahasiswaList[b].nim){
+//
+//                                }
+//                            }
+//
+//                        }
 
 //    private fun getDaftarPresensi(){
 //        daftarPresensiRef.child(matakuliah.id.toString()).child(pertemuan.toString()).addListenerForSingleValueEvent(object :

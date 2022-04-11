@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.absensi.adapter.ListPertemuanAdapter
 import com.app.absensi.databinding.ActivityPertemuanBinding
 import com.app.absensi.data.model.ModelDataAbsensi
+import com.app.absensi.data.model.ModelDataHasilAbsensi
 import com.app.absensi.data.request.AbsensiRequest
+import com.app.absensi.data.response.AbsensiResponse
 import com.app.absensi.data.response.MahasiswaResponse
 import com.app.absensi.data.response.MatakuliahResponse
 import com.app.absensi.network.RetrofitClient
@@ -67,7 +69,52 @@ class PertemuanActivity : AppCompatActivity() {
 
     val barcodeLauncher = registerForActivityResult(ScanContract()) { result: ScanIntentResult ->
         if (result.contents != null) {
-            postAbsensiApi(result.contents, "Hadir", pertemuan.toString(), matakuliahId.toString())
+//            postAbsensiApi(result.contents, "Hadir", pertemuan.toString(), matakuliahId.toString())
+            getAbsensiApi(result.contents)
+        }
+    }
+
+    private fun getAbsensiApi(nim: String) {
+        RetrofitClient.instance(this).getAbsensi(matakuliah.id.toString()).enqueue(object : Callback<ModelDataHasilAbsensi> {
+            override fun onResponse(
+                call: Call<ModelDataHasilAbsensi>,
+                response: Response<ModelDataHasilAbsensi>
+            ) {
+                val data = response.body()?.data
+                if (data!!.isNotEmpty()){
+                    val absensiList = ArrayList<AbsensiResponse>()
+                    for (a in data.indices){
+                        if (data[a].pertemuan == pertemuan.toString()){
+                            absensiList.add(data[a])
+                        }
+                    }
+
+                    checkNim(absensiList, nim)
+                } else {
+                    Toast.makeText(this@PertemuanActivity, "Ada Yang Tidak Beres: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ModelDataHasilAbsensi>, t: Throwable) {
+                Toast.makeText(this@PertemuanActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun checkNim(absensiList: ArrayList<AbsensiResponse>, nim: String){
+        var resultNim = ""
+        if (absensiList.isNotEmpty()){
+            for (a in absensiList.indices){
+                if (nim == absensiList[a].nim){
+                    resultNim = nim
+                }
+            }
+
+            if (resultNim == nim){
+                Toast.makeText(this@PertemuanActivity, "Anda Sudah Absen", Toast.LENGTH_SHORT).show()
+            } else {
+                postAbsensiApi(nim, "Hadir", pertemuan.toString(), matakuliahId.toString())
+            }
         }
     }
 

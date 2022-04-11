@@ -44,6 +44,9 @@ interface Api {
         @Body req: AbsensiRequest
     ): Call<ModelDataAbsensi>
 
+    @GET("api/getAbsensi/{matakuliahId}")
+    fun getAbsensi(@Path("matakuliahId") matakuliahId: String): Call<ModelDataHasilAbsensi>
+
     @GET("api/mahasiswa/{matakuliahId}")
     fun getMahasiswa(@Path("matakuliahId") matakuliahId: String): Call<ModelDataMahasiswa>
 }
