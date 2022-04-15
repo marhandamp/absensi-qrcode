@@ -33,7 +33,7 @@ class DetailPertemuanActivity : AppCompatActivity() {
         matakuliah = intent.getParcelableExtra("MATAKULIAH")!!
         pertemuan = intent.getIntExtra("PERTEMUAN", 0)
         binding.rvPertemuan.layoutManager = LinearLayoutManager(this)
-
+        Log.e("Irwandi", "Ok")
         getMahasiswaApi()
     }
 
@@ -47,6 +47,7 @@ class DetailPertemuanActivity : AppCompatActivity() {
                     val data = response.body()!!.data
                     if (data!!.isNotEmpty()){
                         getAbsensiApi(data)
+                        Log.e("Irwandi-Data", "${data}")
                     } else {
                         Toast.makeText(this@DetailPertemuanActivity, "Mahasiswa Kosong", Toast.LENGTH_SHORT).show()
                     }
@@ -74,9 +75,9 @@ class DetailPertemuanActivity : AppCompatActivity() {
                                 absensiList.add(data[a])
                             }
                         }
-                        adapter = ListPresensiAdapter(mahasiswaList, pertemuan+1, absensiList, this@DetailPertemuanActivity, matakuliah.id!!)
-                        binding.rvPertemuan.adapter = adapter
                     }
+                    adapter = ListPresensiAdapter(mahasiswaList, pertemuan+1, absensiList, this@DetailPertemuanActivity, matakuliah.id!!)
+                    binding.rvPertemuan.adapter = adapter
                 } else {
                     Toast.makeText(this@DetailPertemuanActivity, "Ada Yang Tidak Beres: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }

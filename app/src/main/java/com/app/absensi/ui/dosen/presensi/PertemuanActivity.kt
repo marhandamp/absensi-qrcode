@@ -59,8 +59,8 @@ class PertemuanActivity : AppCompatActivity() {
                     val intent = Intent(this@PertemuanActivity, DetailPertemuanActivity::class.java)
                     intent.putExtra("MATAKULIAH", matakuliah)
                     intent.putExtra("PERTEMUAN", position)
-                    Log.e("Irwandi", matakuliah.toString())
-                    Log.e("Irwandi", position.toString())
+//                    Log.e("Irwandi", matakuliah.toString())
+//                    Log.e("Irwandi", position.toString())
                     startActivity(intent)
                 }
             }
@@ -81,17 +81,16 @@ class PertemuanActivity : AppCompatActivity() {
                 response: Response<ModelDataHasilAbsensi>
             ) {
                 val data = response.body()?.data
+                val absensiList = ArrayList<AbsensiResponse>()
                 if (data!!.isNotEmpty()){
-                    val absensiList = ArrayList<AbsensiResponse>()
                     for (a in data.indices){
                         if (data[a].pertemuan == pertemuan.toString()){
                             absensiList.add(data[a])
                         }
                     }
-
                     checkNim(absensiList, nim)
                 } else {
-                    Toast.makeText(this@PertemuanActivity, "Ada Yang Tidak Beres: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    checkNim(absensiList, nim)
                 }
             }
 
@@ -115,6 +114,8 @@ class PertemuanActivity : AppCompatActivity() {
             } else {
                 postAbsensiApi(nim, "Hadir", pertemuan.toString(), matakuliahId.toString())
             }
+        } else {
+            postAbsensiApi(nim, "Hadir", pertemuan.toString(), matakuliahId.toString())
         }
     }
 
